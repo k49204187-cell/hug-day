@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Hug Day Palei ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+color:white;
+text-align:center;
+overflow-x:hidden;
+background:radial-gradient(circle at bottom,#0d1b2a,#000814);
+}
+
+/* Parallax layers */
+.layer{
+position:fixed;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:-3;
+}
+
+/* Twinkling stars */
+.star{
+position:absolute;
+border-radius:50%;
+background:white;
+box-shadow:0 0 6px white;
+animation:twinkle 3s infinite ease-in-out alternate;
+}
+
+@keyframes twinkle{
+0%{opacity:0.2;transform:scale(0.8);}
+50%{opacity:1;transform:scale(1.2);}
+100%{opacity:0.3;transform:scale(0.9);}
+}
+
+/* Shooting star */
+.shooting-star{
+position:absolute;
+width:120px;
+height:2px;
+background:linear-gradient(-45deg,white,transparent);
+animation:shoot 6s linear infinite;
+z-index:-2;
+}
+
+@keyframes shoot{
+0%{transform:translateX(-200px) translateY(-200px);opacity:1;}
+100%{transform:translateX(1400px) translateY(900px);opacity:0;}
+}
+
+/* Responsive moon */
+.moon{
+position:fixed;
+top:8vh;
+right:5vw;
+width:18vw;
+max-width:120px;
+aspect-ratio:1;
+background:radial-gradient(circle at 30% 30%,#fff,#ddd 60%,#bbb);
+border-radius:50%;
+box-shadow:0 0 40px white,0 0 80px rgba(255,255,255,0.5);
+animation:floatMoon 6s ease-in-out infinite alternate;
+z-index:-2;
+}
+
+@keyframes floatMoon{
+from{transform:translateY(0);}
+to{transform:translateY(15px);}
+}
+
+/* Name constellation */
+.name-container{
+position:relative;
+width:100%;
+height:160px;
+margin-top:30px;
+}
+
+.name-star{
+position:absolute;
+width:6px;
+height:6px;
+background:#ffd700;
+border-radius:50%;
+box-shadow:0 0 10px gold;
+animation:twinkle 2s infinite alternate;
+}
+
+/* Content */
+.container{padding:20px;}
+
+h1{
+font-family:'Dancing Script',cursive;
+font-size:2.4em;
+}
+
+.couple-img{
+width:90%;
+max-width:350px;
+border-radius:20px;
+margin-top:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+
+.typing{
+margin-top:20px;
+font-size:16px;
+min-height:120px;
+padding:0 10px;
+}
+
+button{
+padding:12px 25px;
+font-size:16px;
+border:none;
+border-radius:30px;
+background:#ff4b8b;
+color:white;
+margin-top:20px;
+cursor:pointer;
+}
+
+button:hover{background:#ff1f6b;}
+
+.hug{
+font-size:60px;
+display:none;
+margin-top:15px;
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.3);}
+100%{transform:scale(1);}
+}
+
+iframe{
+width:95%;
+height:280px;
+border-radius:15px;
+margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="layer" id="layer1"></div>
+<div class="layer" id="layer2"></div>
+<div class="moon"></div>
+<div class="shooting-star"></div>
+
+<div class="container">
+
+<h1>Happy Hug Day Palei ❤️</h1>
+
+<img src="hug.jpg" class="couple-img">
+
+<div class="typing" id="typing"></div>
+
+<button onclick="sendHug()">Hold Me Through The Distance 🫂</button>
+<div class="hug" id="hug">🫂</div>
+
+<div class="name-container" id="nameContainer"></div>
+<h3>Distance Between Us 🌍</h3>
+
+<iframe src="https://www.google.com/maps?q=Varanasi+Uttar+Pradesh+to+Nongpoh+Meghalaya&output=embed"></iframe>
+
+</div>
+
+<script>
+// Parallax stars
+const layer1=document.getElementById("layer1");
+const layer2=document.getElementById("layer2");
+
+for(let i=0;i<180;i++){
+let star=document.createElement("div");
+star.className="star";
+let size=Math.random()*2+1;
+star.style.width=size+"px";
+star.style.height=size+"px";
+star.style.top=Math.random()*window.innerHeight+"px";
+star.style.left=Math.random()*window.innerWidth+"px";
+layer1.appendChild(star);
+}
+
+document.addEventListener("mousemove",function(e){
+let x=(window.innerWidth-e.pageX*2)/150;
+let y=(window.innerHeight-e.pageY*2)/150;
+layer1.style.transform=`translate(${x}px,${y}px)`;
+});
+
+// Proper PALEI constellation (grid based)
+const letters={
+"P":[[1,1,1],[1,0,1],[1,1,1],[1,0,0],[1,0,0]],
+"A":[[0,1,0],[1,0,1],[1,1,1],[1,0,1],[1,0,1]],
+"L":[[1,0,0],[1,0,0],[1,0,0],[1,0,0],[1,1,1]],
+"E":[[1,1,1],[1,0,0],[1,1,1],[1,0,0],[1,1,1]],
+"I":[[1,1,1],[0,1,0],[0,1,0],[0,1,0],[1,1,1]]
+};
+
+const container=document.getElementById("nameContainer");
+const word="PALEI";
+const dotSize=8;
+const spacing=20;
+
+word.split("").forEach((char,index)=>{
+let pattern=letters[char];
+pattern.forEach((row,rowIndex)=>{
+row.forEach((col,colIndex)=>{
+if(col===1){
+let star=document.createElement("div");
+star.className="name-star";
+star.style.left=(index*spacing*4 + colIndex*spacing + 20)+"px";
+star.style.top=(rowIndex*spacing)+"px";
+container.appendChild(star);
+}
+});
+});
+});
+
+// Typing message
+const text="Palei... even the stars spell your name tonight. Every night I wish you were here in my arms. If you ever feel alone, just look at the stars. I am under the same sky, missing you, loving you, waiting for the day I can hug you for real. On this Hug Day, close your eyes and feel me holding you tightly. I miss you so much. Forever yours, Pranjal ❤️";
+let i=0;
+function typeWriter(){
+if(i<text.length){
+document.getElementById("typing").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typeWriter,40);
+}}
+typeWriter();
+
+function sendHug(){
+document.getElementById("hug").style.display="block";
+}
+</script>
+
+</body>
+</html>
